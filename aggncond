@@ -1,0 +1,63 @@
+-- AGGREGATIONS [Using Vet Dataset]
+
+-- Calculate the total price of all procedures.
+
+select *
+from dbb.proceduresdetails
+
+select sum(price)
+from dbb.proceduresdetails
+
+-- Calculate the average price of general surgery procedures.
+
+select avg("price")
+from dbb.proceduresdetails
+where proceduretype = 'GENERAL SURGERIES'
+
+-- Calculate the average price of each procedure type
+
+select proceduretype, round(avg(price), 2)
+from dbb.proceduresdetails
+group by 1
+
+-- Write an SQL query that counts the number of unique pets. Return the number of pets.
+
+select count(distinct petid)
+from dbb.pets
+
+-- Write an SQL query that counts how many pets each owner has and sort by the owner with the most pets, then ascending owner id
+
+select ownerid, count(petid) as number_of_pets
+from dbb.pets
+group by 1
+order by 2 desc, 1 asc
+
+-- Write an SQL query that shows only owners who have more than 1 pet
+
+select ownerid, count(petid) as number_of_pets
+from dbb.pets
+group by 1
+having count(petid) > 1
+order by 2 desc, 1 asc
+
+-- Write an SQL query that shows the most expensive price from each procedure type
+
+select proceduretype, max(price) as most_expensive_proc
+from dbb.proceduresdetails
+group by 1, 2
+
+
+-- CONDITIONAL STATEMENTS
+
+-- [Using Vet Dataset] All vaccination procedure prices are 40% off today. Show the new procedure details list with the discounted price!
+
+select *, 
+	case when proceduretype = 'vaccinations' then price * 0.6 
+	else price 
+	end as new_price
+from dbb.proceduresdetails
+
+-- [Using Netflix Dataset] Show all Netflix movies and shows data. If the country and casts are empty, fill in with ‘Unknown’!
+
+select show_id, title, coalesce(director, 'Unknown') as director, coalesce("cast", 'Unknown') as cast, coalesce(country, 'Unknown') as country
+from dbb.netflix
