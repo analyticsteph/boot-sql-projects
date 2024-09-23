@@ -1,0 +1,76 @@
+-- UNION AND JOINS
+-- 1. Extract information on pet name and owner names side-by-side
+
+-- side by side means join
+
+select p.name pet_name, o.name owner_name
+from dbb.pets p
+left join dbb.owners o
+on cast(p.ownerid as int) = o.ownerid
+
+-- 2. Find out which pets from this clinic had procedures performed
+
+select p.name, ph.*
+from dbb.pets p
+left join dbb.procedureshistory ph
+on p.petid = ph.petid
+where ph.petid is not null
+
+select p.name, ph.*
+from dbb.pets p
+inner join dbb.procedureshistory ph
+on p.petid = ph.petid
+
+-- 3. Match up all procedures performed to their descriptions
+
+select ph.*, pd.description
+from dbb.procedureshistory ph
+left join dbb.proceduresdetails pd
+on ph.proceduresubcode = pd.proceduresubcode and ph.proceduretype = pd.proceduretype
+
+-- 4. Extract a table of total costs (procedure prices) incurred by each owner from the clinic (this table should have owner and procedure price side-by-side)
+
+select *
+from dbb.procedureshistory ph
+left join dbb.pets p
+on ph.petid = p.petid
+left join dbb.owners o
+on cast(p.ownerid as int) = o.ownerid
+left join dbb.proceduresdetails pd
+on ph.proceduresubcode = pd.proceduresubcode and ph.proceduretype = pd.proceduretype
+
+select p.ownerid, sum(pd.price) as total_cost
+from dbb.pets p
+inner join dbb.procedureshistory ph
+on ph.petid = p.petid
+left join dbb.proceduresdetails pd
+on ph.proceduresubcode = pd.proceduresubcode and ph.proceduretype = pd.proceduretype
+group by 1
+
+-- 5. Write an SQL statement to select unique PetIDs that are Dogs or have gone through hospitalization.
+
+select petid
+from dbb.pets
+where kind = 'Dog'
+UNION
+select petid
+from dbb.procedureshistory
+where proceduretype = 'HOSPITALIZATION'
+
+-- EXTRA NOTE
+CTE common table expression
+with base as (
+select petid
+from dbb.pets
+where kind = 'Dog'
+UNION
+select petid
+from dbb.procedureshistory
+where proceduretype = 'HOSPITALIZATION'
+	)
+select b.*, p.kind
+from base b
+left join dbb.pets p
+on b.petid = p.petid
+
+
