@@ -1,0 +1,23 @@
+-- WINDOWS FUNCTION
+
+-- Write an SQL statement to add column in your output that consists of the average of procedure price per procedure type in each of the procedure pricelist.
+
+select *, avg(price) over(partition by proceduretype) as avg_price
+from dbb.proceduresdetails
+
+-- round 2 decimal place
+select *, round(cast(avg(price) over(partition by proceduretype) as numeric), 2) as avg_price
+from dbb.proceduresdetails
+
+-- Write an SQL statement to add a column that defines the order of pets from each owner (from the greatest pet ID to the least)
+
+select *, row_number() OVER(partition by ownerid order by petid desc) as pet_rank
+from dbb.pets
+order by 6, 7
+
+-- Write an SQL statement to add column that defines (“HIGH”) for a procedure price that is greater than the average price of the procedure type and (“LOW”) for a procedure price that is lower than the average price of the procedure type.
+
+select *, case when price > avg(price) over(partition by proceduretype) then 'HIGH' 
+else 'LOW' 
+end as price_definition
+from dbb.proceduresdetails
