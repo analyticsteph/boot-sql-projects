@@ -1,0 +1,163 @@
+CREATE TABLE
+
+-- 1. Create a table named jobs including columns job_id, job_title, min_salary, max_salary
+-- 2. Create a table named books including columns book_id (int), book_title (varchar), owner_id (varchar), store_id (int), price (big integer), availability (varchar), genre (varchar) with book_id as primary key
+
+CREATE TABLE dbb.jobs(
+job_id INT,
+job_title CHARACTER VARYING,
+min_salary BIGINT,
+max_salary BIGINT);
+
+CREATE TABLE dbb.books (
+book_id INT,
+book_title CHARACTER VARYING,
+owner_id CHARACTER VARYING,
+store_id INT,
+price BIGINT,
+availability CHARACTER VARYING,
+genre CHARACTER VARYING,
+PRIMARY KEY(book_id));
+
+-- From table books, add two columns: year and author_name
+-- From table books, change the year column name to year_published
+-- From table books, change owner_id type to int
+-- From table books, drop column store_id
+
+ALTER TABLE dbb.books
+ADD COLUMN "year" int, ADD COLUMN author_name character varying
+
+ALTER TABLE dbb.books
+RENAME "year" TO year_published
+
+ALTER TABLE dbb.books
+ALTER COLUMN owner_id SET DATA TYPE INT
+USING owner_id::integer;
+
+ALTER TABLE dbb.books
+DROP COLUMN store_id;
+
+Insert these tuples into the table ‘books’
+(28472, The Animal Book, 39287, 200000, AVAILABLE, COMEDY, 2020, Lily James)
+(34728, Uncharted, 34823, 300000, AVAILABLE, KIDS, 2009, Peter Quill)
+(38942, Life of a Mother, 39248, 1500000, AVAILABLE, NON-FICTION, 2003, Frank Hamlin)
+(89347, Birdcage, 30428, 1250000, AVAILABLE, FICTION, 2018, Hannah Wexler)
+(93287, How to Win an Arguments, 24832, 120000, AVAILABLE, NON-FICTION, 2022, Deborah Ramsey)
+
+-- Delete all books in the table that is published after 2020
+-- Delete all books in the table whose authors’ names have ‘James’ in it
+-- Delete all books with bookid 123218, 923943, and 374326
+-- For books that are published before 2010 change the genre into ‘OLDIES’
+-- For books that cost more than 1 million, change the availability into ‘OUT OF STOCK’ and the price becomes null
+
+INSERT INTO dbb.books (book_id, book_title, owner_id, price, availability, genre, year_published, author_name)
+VALUES (28472, 'The Animal Book', 39287, 200000, 'AVAILABLE', 'COMEDY', 2020, 'Lily James'),
+(34728, 'Uncharted', 34823, 300000, 'AVAILABLE', 'KIDS', 2009, 'Peter Quill'),
+(38942, 'Life of a Mother', 39248, 1500000, 'AVAILABLE', 'NON-FICTION', 2003, 'Frank Hamlin'),
+(89347, 'Birdcage', 30428, 1250000, 'AVAILABLE', 'FICTION', 2018, 'Hannah Wexler'),
+(93287, 'How to Win an Arguments', 24832, 120000, 'AVAILABLE', 'NON-FICTION', 2022, 'Deborah Ramsey');
+
+Select *
+from dbb.books
+
+DELETE FROM dbb.books
+WHERE year_published > 2020
+
+Select *
+from dbb.books
+
+DELETE FROM dbb.books
+WHERE author_name like '%James%'
+
+select *
+from dbb.books
+
+DELETE FROM dbb.books
+WHERE book_id in (123218, 923943, 374326)
+
+select *
+from dbb.books
+
+UPDATE dbb.books
+SET genre = 'OLDIES'
+WHERE year_published < 2010
+
+select *
+from dbb.books
+
+UPDATE dbb.books
+SET availability = 'OUT OF STOCK'
+WHERE price > 1000000
+
+select *
+from dbb.books
+
+TRUNCATE TABLE dbb.books
+
+select *
+from dbb.books
+
+CREATE TABLE IF NOT EXISTS dbb.netflix
+(
+	show_id character varying NOT NULL,
+	type character varying,
+	title character varying,
+	director character varying,
+	"cast" character varying,
+	country character varying,
+	date_added date,
+	release_year integer,
+	rating character varying,
+	duration character varying,
+	listed_in character varying,
+	description character varying,
+	PRIMARY KEY (show_id)
+)
+
+select*
+from dbb.netflix
+
+CREATE TABLE dbb.pets (
+	petid varchar NOT NULL,
+	name varchar,
+	kind varchar,
+	gender varchar,
+	age int,
+	ownerid varchar,
+	PRIMARY KEY(petid)
+)
+
+select *
+from dbb.pets
+
+CREATE TABLE dbb.proceduresdetails (
+	ProcedureType varchar,
+	ProcedureSubCode int,
+	Description varchar,
+	Price bigint
+)
+select *
+from dbb.ProceduresDetails
+
+CREATE TABLE dbb.procedureshistory (
+	petid varchar,
+	date date,
+	proceduretype varchar,
+	proceduresubcode int
+)
+
+CREATE TABLE dbb.owners (
+	ownerid int,
+	name varchar,
+	surname varchar,
+	streetaddress varchar,
+	city varchar,
+	state varchar,
+	statefull varchar,
+	zipcode int
+)
+
+select *
+from dbb.owners
+
+
